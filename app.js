@@ -14,9 +14,17 @@ var articlesRouter = require("./routes/articles");
 
 mongoose.set("strictQuery", true);
 
-mongoose.connect("mongodb://localhost/conduit", (err) => {
-  console.log(err ? err : "connected to database");
-});
+mongoose
+  .connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("connected to database");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 var app = express();
 
