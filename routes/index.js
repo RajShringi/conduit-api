@@ -5,6 +5,10 @@ const User = require("../models/User");
 var router = express.Router();
 
 /* GET home page. */
+router.get("/", async function (req, res, next) {
+  res.status(200).json({ msg: "Server is Running" });
+});
+
 router.get("/tags", async function (req, res, next) {
   try {
     const tags = await Article.distinct("tagList");
@@ -41,11 +45,9 @@ router.put("/user", auth.verifyToken, async (req, res, next) => {
     const updatedUser = await User.findByIdAndUpdate(userId, req.body.user, {
       new: true,
     });
-    res
-      .status(200)
-      .json({
-        user: updatedUser.userJSON(req.headers.authorization.split(" ")[1]),
-      });
+    res.status(200).json({
+      user: updatedUser.userJSON(req.headers.authorization.split(" ")[1]),
+    });
   } catch (error) {
     next(error);
   }
